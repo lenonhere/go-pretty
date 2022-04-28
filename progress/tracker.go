@@ -199,6 +199,18 @@ func (t *Tracker) start() {
 	t.mutex.Unlock()
 }
 
+func (t *Tracker) Restart() {
+	t.mutex.Lock()
+	if t.Total < 0 {
+		t.Total = math.MaxInt64
+	}
+	t.value = 0
+	t.done = false
+	t.err = false
+	t.timeStart = time.Now()
+	t.mutex.Unlock()
+}
+
 // this must be called with the mutex held with a write lock
 func (t *Tracker) stop() {
 	t.done = true
